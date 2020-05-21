@@ -9,9 +9,10 @@ from resources.ExpenseResource import ExpenseResource, ItemsByType, ItemsByUser,
 
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:8100"}})
+cors = CORS(app)
 api = Api(app)
 
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///DataFile.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.secret_key = "shopApp"
