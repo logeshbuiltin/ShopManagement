@@ -9,7 +9,7 @@ from resources.ExpenseResource import ExpenseResource, ItemsByType, ItemsByUser,
 
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:8100"}})
 api = Api(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///DataFile.db"
