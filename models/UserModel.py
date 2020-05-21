@@ -1,5 +1,6 @@
 import sqlite3
 from dataFiles.dbFile import dataB
+from datetime import datetime
 
 
 class UserModel(dataB.Model):
@@ -13,17 +14,20 @@ class UserModel(dataB.Model):
     lastname = dataB.Column(dataB.String(80))
     email_id = dataB.Column(dataB.String(80))
     phone_no = dataB.Column(dataB.Integer)
+    curr_code = dataB.Column(dataB.String(20))
     shop_id = dataB.Column(dataB.Integer)
     is_admin = dataB.Column(dataB.Boolean, default=False)
     is_active = dataB.Column(dataB.Boolean, default=True)
+    create_date = dataB.Column(dataB.DateTime, default=datetime.utcnow)
 
-    def __init__(self, username, password, firstname, lastname, emailId, phoneNo):
+    def __init__(self, username, password, firstname, lastname, emailId, phoneNo, currCode):
         self.username = username
         self.password = password
         self.firstname = firstname
         self.lastname = lastname
         self.email_id = emailId
         self.phone_no = phoneNo
+        self.curr_code = currCode
 
 
     def json(self):
@@ -34,7 +38,8 @@ class UserModel(dataB.Model):
             "firstname": self.firstname, 
             "lastname": self.lastname, 
             "emailId": self.email_id, 
-            "phoneNo": self.phone_no
+            "phoneNo": self.phone_no,
+            "currCode": self.curr_code
         }
 
     

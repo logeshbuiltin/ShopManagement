@@ -30,6 +30,10 @@ class UserResource(Resource):
         type=str,
         help="phone number field of the user"
     )
+    parser.add_argument("currCode",
+        type=str,
+        help="Currency Code field of the user"
+    )
 
 
     def get(self, username):
@@ -37,14 +41,14 @@ class UserResource(Resource):
         if user_data:
             return user_data.json()
         else:
-            return ("message", f"{username} not found in the database"), 205
+            return ("message", f"{username} not found in the database"), 201
 
 
     def post(self, username):
         data = UserResource.parser.parse_args()
         user = UserModel.find_by_username(username)
         if user:
-            return {"registration": "exists"}, 205
+            return {"registration": "exists"}, 201
         else:
             user = UserModel(**data)
             user.save_to_db()
@@ -53,27 +57,21 @@ class UserResource(Resource):
 
     def put(self, username):
         data = UserResource.parser.parse_args()
-        user = UserModel.find_by_username(username)
+        user = UserModel.find_by_uerid(username)
         if user:
-            if(data.password):
-                user.password = data["password"]
+            user.username = data["username"]
+            user.password = data["password"]
+            user.firstname = data["firstname"]
+            user.lastname = data["lastname"]
+            user.email_id = data["emailId"]
+            user.phone_no = data["phoneNo"]
+            user.curr_code = data["currCode"]    
 
-            if(data.firstname):
-                user.personname = data["firstname"]
-
-            if(data.lastname):
-                user.personname = data["lastname"]
-
-            if(data.emailId):
-                user.emailId = data["emailId"]
-
-            if(data.phoneNo):
-                user.phoneNo = data["phoneNo"]
+            user.save_to_db()       
         else:
             return {"error": "failed", "reason": "User not found"}
            # user = UserModel(**data)
-        
-        user.save_to_db()
+    
         return user.json(), 201 if user else 401
         
 

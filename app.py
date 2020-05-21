@@ -5,7 +5,7 @@ from flask_cors import CORS, cross_origin
 from security import authenticate, identity
 from dataFiles.dbFile import dataB
 from resources.UserResource import UserResource
-from resources.ExpenseResource import ExpenseResource, ItemsByType, ItemsByUser
+from resources.ExpenseResource import ExpenseResource, ItemsByType, ItemsByUser, ItemsByDate
 
 
 app = Flask(__name__)
@@ -30,6 +30,8 @@ api.add_resource(ExpenseResource, "/item/<string:_id>")
 api.add_resource(ItemsByType, "/items/type/<string:purchaseType>/<string:userId>")
 
 api.add_resource(ItemsByUser, "/items/user/<string:userId>")
+
+api.add_resource(ItemsByDate, "/items/user/<string:fromDate>/<string:toDate>/<string:userId>")
 
 if __name__ == '__main__':
     dataB.init_app(app)

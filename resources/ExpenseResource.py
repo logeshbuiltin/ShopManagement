@@ -1,7 +1,7 @@
 
 import sqlite3
-import json
-from datetime import datetime
+from datetime import datetime, date
+from flask import jsonify
 from flask_restful import Resource,reqparse
 from models.ExpenseModel import ExpenseModel
 
@@ -11,7 +11,10 @@ class ExpenseResource(Resource):
     parser.add_argument('entryAmount')
     parser.add_argument('description')
     parser.add_argument('purchaseDate')
+    parser.add_argument('purchaseDay')
+    parser.add_argument('addedBy')
     parser.add_argument('userId')
+
 
     def get(self, _id):
         item = ExpenseModel.find_by_id(_id)
@@ -24,11 +27,14 @@ class ExpenseResource(Resource):
         data = ExpenseResource.parser.parse_args()
         y, m, d = data['purchaseDate'].split('-')
         entryDate = datetime(int(y), int(m), int(d)).isoformat()
+        #entryDate = datetime.strptime(data['purchaseDate'], '%Y-%m-%d').date()
         item = ExpenseModel(
             data['purchaseType'],
             data['entryAmount'],
             data['description'],
             entryDate,
+            data['purchaseDay'],
+            data['addedBy'],
             data['userId']
         )
         try:
@@ -44,10 +50,12 @@ class ExpenseResource(Resource):
         entryDate = datetime(int(y), int(m), int(d)).isoformat()
         item = ExpenseModel.find_by_id(_id)
         if item:
-            item.purchase_date = entryDate
             item.purchase_type = data['purchaseType']
             item.entry_amount = data['entryAmount']
             item.description = data['description']
+            item.purchase_date = entryDate
+            item.purchase_day = data['purchaseDay']
+            item.added_by =  data['addedBy']
             item.user_id = data['userId']
 
             item.save_to_db()
@@ -62,6 +70,7 @@ class ExpenseResource(Resource):
             item.delete_from_db()
 
         return {"item": "Deleted Successfully"}
+        
 
 
 class ItemsByUser(Resource):
@@ -71,4 +80,8 @@ class ItemsByUser(Resource):
 class ItemsByType(Resource):
     def get(self,  purchaseType, userId):
         return ExpenseModel.find_by_type(purchaseType, userId)
+
+class ItemsByDate(Resource):
+    def get(self, fromDate, toDate, userId):
+        return ExpenseModel.find_by_date(fromDate, toDate, userId)
 
