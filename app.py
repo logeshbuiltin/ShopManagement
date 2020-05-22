@@ -17,10 +17,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///DataFile.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.secret_key = "shopApp"
 
-@cross_origin()
-@app.before_first_request
-def create_tables():
-    dataB.create_all()
 
 jwt = JWT(app, authenticate, identity)
 
@@ -36,4 +32,11 @@ api.add_resource(ItemsByDate, "/items/user/<string:fromDate>/<string:toDate>/<st
 
 if __name__ == '__main__':
     dataB.init_app(app)
-    app.run(port=5000, debug=True)
+
+    if app.config['DEBUG']:
+        @cross_origin()
+        @app.before_first_request
+        def create_tables():
+            dataB.create_all()
+
+    app.run(port=5000)
