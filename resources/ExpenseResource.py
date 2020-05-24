@@ -13,6 +13,7 @@ class ExpenseResource(Resource):
     parser.add_argument('purchaseDate')
     parser.add_argument('purchaseDay')
     parser.add_argument('addedBy')
+    parser.add_argument('currCode')
     parser.add_argument('userId')
 
 
@@ -35,6 +36,7 @@ class ExpenseResource(Resource):
             entryDate,
             data['purchaseDay'],
             data['addedBy'],
+            data['currCode'],
             data['userId']
         )
         try:
@@ -56,6 +58,7 @@ class ExpenseResource(Resource):
             item.purchase_date = entryDate
             item.purchase_day = data['purchaseDay']
             item.added_by =  data['addedBy']
+            item.curr_code = data['currCode']
             item.user_id = data['userId']
 
             item.save_to_db()

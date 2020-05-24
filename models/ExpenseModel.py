@@ -16,17 +16,19 @@ class ExpenseModel(dataB.Model):
     purchase_date = dataB.Column(dataB.String(20))
     purchase_day = dataB.Column(dataB.String(20))
     added_by = dataB.Column(dataB.String(20))
+    curr_code = dataB.Column(dataB.String(10))
     user_id = dataB.Column(dataB.Integer, dataB.ForeignKey('users.id'))
 
     user = dataB.relationship('UserModel')
 
-    def __init__(self, purchase_type, entry_amount, description, purchase_date, purchase_day, added_by, user_id):
+    def __init__(self, purchase_type, entry_amount, description, purchase_date, purchase_day, added_by, curr_code, user_id):
         self.purchase_type = purchase_type
         self.entry_amount = entry_amount
         self.description = description
         self.purchase_date = purchase_date
         self.purchase_day = purchase_day
         self.added_by = added_by
+        self.curr_code = curr_code
         self.user_id = user_id
 
 
@@ -39,6 +41,7 @@ class ExpenseModel(dataB.Model):
             "purchaseDate": self.purchase_date,
             "purchaseDay": self.purchase_day,
             "addedBy": self.added_by,
+            "currCode": self.curr_code,
             "userId": self.user_id
         }
 
