@@ -2,5 +2,6 @@ Flask
 Flask-RESTful
 Flask-JWT
 Flask-SQLAlchemy
+Flask-Mail
 uwsgi
 flask_cors

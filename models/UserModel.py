@@ -15,12 +15,13 @@ class UserModel(dataB.Model):
     email_id = dataB.Column(dataB.String(80))
     phone_no = dataB.Column(dataB.Integer)
     curr_code = dataB.Column(dataB.String(20))
+    favorite = dataB.Column(dataB.String(200))
     shop_id = dataB.Column(dataB.Integer)
     is_admin = dataB.Column(dataB.Boolean, default=False)
     is_active = dataB.Column(dataB.Boolean, default=True)
     create_date = dataB.Column(dataB.DateTime, default=datetime.utcnow)
 
-    def __init__(self, username, password, firstname, lastname, emailId, phoneNo, currCode):
+    def __init__(self, username, password, firstname, lastname, emailId, phoneNo, currCode, favorite):
         self.username = username
         self.password = password
         self.firstname = firstname
@@ -28,6 +29,7 @@ class UserModel(dataB.Model):
         self.email_id = emailId
         self.phone_no = phoneNo
         self.curr_code = currCode
+        self.favorite = favorite
 
 
     def json(self):
@@ -39,7 +41,8 @@ class UserModel(dataB.Model):
             "lastname": self.lastname, 
             "emailId": self.email_id, 
             "phoneNo": self.phone_no,
-            "currCode": self.curr_code
+            "currCode": self.curr_code,
+            "favorite": self.favorite
         }
 
     
@@ -51,6 +54,10 @@ class UserModel(dataB.Model):
     @classmethod
     def find_by_uerid(cls, _id):
         return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def find_by_userfav(cls, username, favorite):
+        return cls.query.filter_by(username=username).filter_by(favorite=favorite).first()
 
 
     def save_to_db(self):
