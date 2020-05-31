@@ -13,7 +13,7 @@ class UserModel(dataB.Model):
     firstname = dataB.Column(dataB.String(80))
     lastname = dataB.Column(dataB.String(80))
     email_id = dataB.Column(dataB.String(80))
-    phone_no = dataB.Column(dataB.BigInteger)
+    phone_no = dataB.Column(dataB.String(20))
     curr_code = dataB.Column(dataB.String(20))
     favorite = dataB.Column(dataB.String(200))
     shop_id = dataB.Column(dataB.Integer)
