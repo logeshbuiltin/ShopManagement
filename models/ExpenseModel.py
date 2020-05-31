@@ -2,7 +2,7 @@
 import sqlite3
 from dataFiles.dbFile import dataB
 from sqlalchemy import cast, Date
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class ExpenseModel(dataB.Model):
@@ -65,6 +65,7 @@ class ExpenseModel(dataB.Model):
     def find_by_date(cls, fromDate, toDate, userId):
         start_date = datetime.strptime(fromDate, '%Y-%m-%d').date()
         end_date = datetime.strptime(toDate, '%Y-%m-%d').date()
+        end_date = end_date + timedelta(days=1)
         item_list = cls.query.filter_by(user_id=userId).filter(cls.purchase_date>=start_date).filter(cls.purchase_date<=end_date).all()
         return {"items": list(map(lambda x: x.json(), item_list))}
 
