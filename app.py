@@ -7,6 +7,7 @@ from dataFiles.dbFile import dataB
 from resources.UserResource import UserResource, forgetPass
 from resources.ExpenseResource import ExpenseResource, ItemsByType, ItemsByUser, ItemsByDate
 import configparser
+import os
 
 
 app = Flask(__name__)
@@ -18,7 +19,7 @@ config = configparser.ConfigParser()
 config.read('userdetails.properties')
 
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///DataFile.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite:///DataFile.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.secret_key = "shopApp"
 

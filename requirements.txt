@@ -5,3 +5,4 @@ Flask-SQLAlchemy
 Flask-Mail
 uwsgi
 flask_cors
+psycopg2
