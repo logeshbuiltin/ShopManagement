@@ -11,7 +11,7 @@ class ExpenseModel(dataB.Model):
 
     id = dataB.Column(dataB.Integer, primary_key=True)
     purchase_type = dataB.Column(dataB.String(100))
-    entry_amount = dataB.Column(dataB.Integer)
+    entry_amount = dataB.Column(dataB.Float)
     description = dataB.Column(dataB.String(300))
     purchase_date = dataB.Column(dataB.String(20))
     purchase_day = dataB.Column(dataB.String(20))
