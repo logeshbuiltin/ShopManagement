@@ -73,7 +73,7 @@ class ExpenseModel(dataB.Model):
     def save_to_db(self):
         dataB.session.add(self)
         dataB.session.commit()
-
+        
 
     def delete_from_db(self):
         dataB.session.delete(self)

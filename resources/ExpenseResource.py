@@ -4,6 +4,8 @@ from datetime import datetime, date
 from flask import jsonify
 from flask_restful import Resource,reqparse
 from models.ExpenseModel import ExpenseModel
+#import json
+#from django.core.serializers.json import DjangoJSONEncoder
 
 class ExpenseResource(Resource):
     parser = reqparse.RequestParser()
@@ -26,14 +28,16 @@ class ExpenseResource(Resource):
     
     def post(self, _id):
         data = ExpenseResource.parser.parse_args()
-        y, m, d = data['purchaseDate'].split('-')
-        entryDate = datetime(int(y), int(m), int(d))
+        #y, m, d = data['purchaseDate'].split('-')
+        #entryDate = datetime(int(y), int(m), int(d), 0, 0, 0, 0)
+        entryDate = datetime.strptime(data['purchaseDate'], '%Y-%m-%d')
+        #entryDate = json.dumps(entryDate, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
         #entryDate = datetime.strptime(data['purchaseDate'], '%Y-%m-%d').date()
         item = ExpenseModel(
             data['purchaseType'],
             data['entryAmount'],
             data['description'],
-            entryDate,
+            data['purchaseDate'],
             data['purchaseDay'],
             data['addedBy'],
             data['currCode'],
@@ -49,7 +53,7 @@ class ExpenseResource(Resource):
     def put(self, _id):
         data = ExpenseResource.parser.parse_args()
         y, m, d = data['purchaseDate'].split('-')
-        entryDate = datetime(int(y), int(m), int(d))
+        entryDate = datetime(int(y), int(m), int(d)).isoformat()
         item = ExpenseModel.find_by_id(_id)
         if item:
             item.purchase_type = data['purchaseType']
