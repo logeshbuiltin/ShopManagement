@@ -28,16 +28,14 @@ class ExpenseResource(Resource):
     
     def post(self, _id):
         data = ExpenseResource.parser.parse_args()
-        #y, m, d = data['purchaseDate'].split('-')
-        #entryDate = datetime(int(y), int(m), int(d), 0, 0, 0, 0)
-        entryDate = datetime.strptime(data['purchaseDate'], '%Y-%m-%d')
+        y, m, d = data['purchaseDate'].split('-')
+        entryDate = datetime(int(y), int(m), int(d)).isoformat()
         #entryDate = json.dumps(entryDate, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
-        #entryDate = datetime.strptime(data['purchaseDate'], '%Y-%m-%d').date()
         item = ExpenseModel(
             data['purchaseType'],
             data['entryAmount'],
             data['description'],
-            data['purchaseDate'],
+            entryDate,
             data['purchaseDay'],
             data['addedBy'],
             data['currCode'],
