@@ -27,7 +27,7 @@ class ExpenseResource(Resource):
     def post(self, _id):
         data = ExpenseResource.parser.parse_args()
         y, m, d = data['purchaseDate'].split('-')
-        entryDate = datetime(int(y), int(m), int(d)).isoformat()
+        entryDate = datetime(int(y), int(m), int(d))
         #entryDate = datetime.strptime(data['purchaseDate'], '%Y-%m-%d').date()
         item = ExpenseModel(
             data['purchaseType'],
@@ -49,7 +49,7 @@ class ExpenseResource(Resource):
     def put(self, _id):
         data = ExpenseResource.parser.parse_args()
         y, m, d = data['purchaseDate'].split('-')
-        entryDate = datetime(int(y), int(m), int(d)).isoformat()
+        entryDate = datetime(int(y), int(m), int(d))
         item = ExpenseModel.find_by_id(_id)
         if item:
             item.purchase_type = data['purchaseType']
