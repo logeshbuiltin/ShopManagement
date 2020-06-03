@@ -14,17 +14,18 @@ app = Flask(__name__)
 cors = CORS(app)
 api = Api(app)
 
-@cross_origin()
-@app.before_first_request
-def create_tables():
-    dataB.create_all()
+# @cross_origin()
+# @app.before_first_request
+# def create_tables():
+#     dataB.create_all()
 
 config = configparser.ConfigParser()
 config.read('userdetails.properties')
 
 app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite:///DataFile.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DataFile.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.secret_key = "shopApp"
 
@@ -40,10 +41,10 @@ api.add_resource(forgetPass, "/forgetpassword/user")
 if __name__ == '__main__':
     dataB.init_app(app)
 
-    # if app.config['DEBUG']:
-    #     @cross_origin()
-    #     @app.before_first_request
-    #     def create_tables():
-    #         dataB.create_all()
+    if app.config['DEBUG']:
+        @cross_origin()
+        @app.before_first_request
+        def create_tables():
+            dataB.create_all()
 
     app.run(port=5000)
