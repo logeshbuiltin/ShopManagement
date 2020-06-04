@@ -65,7 +65,7 @@ class ExpenseModel(dataB.Model):
     def find_by_date(cls, fromDate, toDate, userId):
         start_date = datetime.strptime(fromDate, '%Y-%m-%d').date()
         end_date = datetime.strptime(toDate, '%Y-%m-%d').date()
-        end_date = end_date + timedelta(days=1)
+        #end_date = end_date + timedelta(days=1)
         item_list = cls.query.filter_by(user_id=userId).filter(cast(cls.purchase_date, Date)>=start_date).filter(cast(cls.purchase_date, Date)<=end_date).all()
         return {"items": list(map(lambda x: x.json(), item_list))}
 
